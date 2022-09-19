@@ -1,2 +1,3 @@
+include ':glimage'
 include ':app'
 rootProject.name = "HBBGL"

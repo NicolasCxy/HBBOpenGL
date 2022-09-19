@@ -2,10 +2,15 @@ package com.hbb.gl;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
 import androidx.camera.core.Preview;
 import androidx.lifecycle.LifecycleOwner;
+
+import com.hbb.gl.filter.CameraFilter;
+import com.hbb.gl.filter.VideoFilter;
+import com.hbb.gl.utils.CameraHelper;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -18,8 +23,10 @@ public class CameraRender implements GLSurfaceView.Renderer, Preview.OnPreviewOu
     private  int textures = 0;
 
     private GLListener mGLListener;
-    private ScreenFilter mScreenFilter;
+    private VideoFilter mScreenFilter;
     private  MyGLView myGLView;
+    private CameraFilter cameraFilter;
+    float[] mtx = new float[16];
 
     public CameraRender(Context context, MyGLView myGLView) {
         this.mContext = context;
@@ -40,22 +47,27 @@ public class CameraRender implements GLSurfaceView.Renderer, Preview.OnPreviewOu
 
         mSurfaceTexture.setOnFrameAvailableListener(this);
         //初始化OPENGL程序
-        mScreenFilter = new ScreenFilter(mContext);
+        mScreenFilter = new VideoFilter(mContext);
+        cameraFilter = new CameraFilter(mContext);
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-
+        GLES20.glViewport(0,0,width,height);
+        cameraFilter.setSize(width,height);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        //请求更新数据
         mSurfaceTexture.updateTexImage();
-
-        float[] mtx = new float[16];
+        //获取变化矩阵，做画面矫正
         mSurfaceTexture.getTransformMatrix(mtx);
-
-        mScreenFilter.onDraw(myGLView.getWidth(),myGLView.getHeight(),mtx,textures);
+        //进行绘制
+        int textureId = cameraFilter.onDraw(textures, mtx);
+        //处理上次搞完的数据
+        mScreenFilter.onDraw(textureId);
+//        mScreenFilter.onDraw(myGLView.getWidth(),myGLView.getHeight(),mtx,textures);
     }
 
     @Override

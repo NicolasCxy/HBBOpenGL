@@ -1,4 +1,4 @@
-package com.hbb.gl;
+package com.hbb.gl.utils;
 
 import android.os.HandlerThread;
 import android.util.Size;

@@ -12,9 +12,9 @@ const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);
 //颜色滤镜
 void main() {
 
-    vec4 rgb =  texture2D(vTexture, aCoord);
+    vec4 rgb =  texture2D(vTexture, vec2(1.0 - aCoord.x, aCoord.y));
 
     float color = (rgb.r+ rgb.b + rgb.g) / 3.0;
 
-    gl_FragColor = vec4(color, color, color, rgb.a);
+    gl_FragColor = rgb;
 }

@@ -1,0 +1,11 @@
+//世界坐标
+attribute vec4 vPosition;
+//纹理坐标
+attribute vec4 vCoord;
+//顶点坐标，传给着色器去对应位置采样
+varying vec2 aCoord;
+
+void main() {
+    gl_Position = vPosition;
+    aCoord = vCoord.xy;
+}
