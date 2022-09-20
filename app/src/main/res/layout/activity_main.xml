@@ -7,8 +7,35 @@
     tools:context=".MainActivity">
 
     <com.hbb.gl.MyGLView
+        android:id="@+id/gl_View"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Hello World!"/>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="110dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:onClick="start"
+            android:text="开始"
+            android:textSize="20dp"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:onClick="stop"
+            android:text="停止"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

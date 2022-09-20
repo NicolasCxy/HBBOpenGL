@@ -6,6 +6,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import com.hbb.gl.filter.AbstractFilter;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,10 +35,14 @@ public class MainActivity extends AppCompatActivity {
      *     - 通过采样器 根据坐标和图层采数据，最终进行绘制渲染
      */
 
+    private static final String TAG = "MainActivity";
+    private MyGLView myGLViewView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myGLViewView = (MyGLView) findViewById(R.id.gl_View);
         checkPermission();
     }
 
@@ -46,5 +57,19 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return false;
+    }
+
+    public void remoteList(View view) {
+//        String remove = mList.remove(0);
+//        Toast.makeText(this, "删除: " +remove, Toast.LENGTH_SHORT).show();
+//        Log.i(TAG, "remoteList: " + mList.toString());
+    }
+
+    public void stop(View view) {
+        myGLViewView.stopRecord();
+    }
+
+    public void start(View view) {
+        myGLViewView.startRecord();
     }
 }

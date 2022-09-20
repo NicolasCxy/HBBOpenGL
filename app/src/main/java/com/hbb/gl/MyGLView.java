@@ -31,4 +31,12 @@ public class MyGLView extends GLSurfaceView implements GLListener {
     public void updateGL() {
         requestRender();
     }
+
+    public void stopRecord() {
+        cameraRender.stopRecord();
+    }
+
+    public void startRecord() {
+        cameraRender.startRecord();
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.GLES11;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
+import android.util.Log;
 
 
 import com.hbb.gl.utils.OpenGLUtils;
@@ -15,7 +16,7 @@ import java.nio.FloatBuffer;
 /**
  * GL程序加载类
  */
-public class AbstractFilter {
+public class  AbstractFilter {
     //顶点坐标
     float[] VERTEX = {
             -1.0f, -1.0f,
@@ -32,15 +33,17 @@ public class AbstractFilter {
             1.0f, 0.0f,
     };
 
-    private final FloatBuffer vertexBuffer, textureBuffer;
+
+    protected final FloatBuffer vertexBuffer, textureBuffer;
     protected final int program;
-    private int vPosition;
-    private int vCoord;
-    private int vTexture;
+    protected int vPosition;
+    protected int vCoord;
+    protected int vTexture;
     protected float[] mtx;
 
     public int mWidth;
     public int mHeight;
+    public int vMatrix;
 
     public AbstractFilter(Context context, int vertex, int fragment) {
         String vertexShader = OpenGLUtils.readRawTextFile(context, vertex);
@@ -51,7 +54,7 @@ public class AbstractFilter {
         //获取GL程序属性 （就是属性的地址值，对Java层来说没意义）
         vPosition = GLES20.glGetAttribLocation(program, "vPosition");
         vCoord = GLES20.glGetAttribLocation(program, "vCoord");
-//        int vMatrix = GLES20.glGetUniformLocation(program, "vMatrix");
+        vMatrix = GLES20.glGetUniformLocation(program, "vMatrix");
         //获取片源参数，纹理对象，用来接图层
         vTexture = GLES20.glGetUniformLocation(program, "vTexture");
 
@@ -71,7 +74,9 @@ public class AbstractFilter {
     }
 
     public int onDraw(int textureId, float[] mtx) {
+//        GLES20.glViewport(0, 0, mWidth, mHeight);
         this.mtx = mtx;
+
         GLES20.glUseProgram(program);
         vertexBuffer.position(0);
         textureBuffer.position(0);
@@ -103,10 +108,18 @@ public class AbstractFilter {
         return textureId;
     }
 
+    /**
+     * 可以在绘制前做些额外操作
+     */
     protected void beforeDraw() {
 
     }
 
+    /**
+     * 设置size，可选，创建FBO的时候需要
+     * @param width
+     * @param height
+     */
     public void setSize(int width, int height) {
         this.mWidth = width;
         this.mHeight = height;

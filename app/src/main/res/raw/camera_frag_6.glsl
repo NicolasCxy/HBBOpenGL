@@ -16,5 +16,5 @@ void main() {
 
     float color = (rgb.r+ rgb.b + rgb.g) / 3.0;
 
-    gl_FragColor = rgb;
+    gl_FragColor = vec4(color,color,color,rgb.a);
 }
